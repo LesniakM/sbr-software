@@ -1,0 +1,11 @@
+description: PWM bindings for H-bridge drivers.
+
+compatible: "pwm-motors"
+
+include: base.yaml
+
+properties:
+  pwms:
+    required: true
+    type: phandle-array
+    description: PWM specifier driving the servo motor.

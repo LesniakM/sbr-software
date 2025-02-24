@@ -1,0 +1,5 @@
+board:
+  name: core51
+  vendor: waveshare
+  socs:
+  - name: nrf51822

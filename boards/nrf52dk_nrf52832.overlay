@@ -1,0 +1,111 @@
+// To get started, press Ctrl+Space to bring up the completion menu and view the available nodes.
+
+// You can also use the buttons in the sidebar to perform actions on nodes.
+// Actions currently available include:
+
+// * Enabling / disabling the node
+// * Adding the bus to a bus
+// * Removing the node
+// * Connecting ADC channels
+
+// For more help, browse the DeviceTree documentation at https://docs.zephyrproject.org/latest/guides/dts/index.html
+// You can also visit the nRF DeviceTree extension documentation at https://docs.nordicsemi.com/bundle/nrf-connect-vscode/page/guides/ncs_configure_app.html#devicetree-support-in-the-extension
+&i2c0 {  
+    mpu6050: mpu6050@68{
+        compatible = "i2c-device";
+        status = "okay";
+        reg = < 0x68 >;
+    };
+
+    clock-frequency = <I2C_BITRATE_FAST>;
+};
+
+/{
+    aliases {
+        gpio-in1 = &gpioin1;
+        gpio-in2 = &gpioin2;
+        gpio-in3 = &gpioin3;
+        gpio-in4 = &gpioin4;
+        bt1 = &button0;
+        bt2 = &button1;
+        bt3 = &button2;
+        bt4 = &button3;
+        pwm-servo0 = &pwm_led0;
+        pwm-servo1 = &pwm_led1;
+    };
+    pwmleds {
+        compatible = "pwm-leds";
+        pwm_led0: pwm_led_0 {
+            pwms = <&pwm0 0 PWM_USEC(25) PWM_POLARITY_NORMAL>;
+        };
+        pwm_led1: pwm_led_1 {
+            pwms = <&pwm0 1 PWM_USEC(25) PWM_POLARITY_NORMAL>;
+        };
+    };
+
+    leds {
+        gpioin1: gpio_in1 {
+            gpios = <&gpio0 4 0>;
+            label = "GPIO_IN1";
+        };
+
+        gpioin2: gpio_in2 {
+            gpios = <&gpio0 28 0>;
+            label = "GPIO_IN2";
+        };
+
+        gpioin3: gpio_in3 {
+            gpios = <&gpio0 29 0>;
+            label = "GPIO_IN3";
+        };
+
+        gpioin4: gpio_in4 {
+            gpios = <&gpio0 30 0>;
+            label = "GPIO_IN4";
+        };
+    };
+};
+
+&pwm0 {
+    status = "okay";
+    pinctrl-0 = <&pwm0_custom>;
+    pinctrl-1 = <&pwm0_csleep>;
+    pinctrl-names = "default", "sleep";
+};
+
+&pinctrl {
+    pwm0_custom: pwm0_custom {
+        group1 {
+            psels = <NRF_PSEL(PWM_OUT0, 0, 3)>;
+            nordic,invert;
+        };
+
+        group2 {
+            psels = <NRF_PSEL(PWM_OUT1, 0, 31)>;
+        };
+    };
+
+    pwm0_csleep: pwm0_csleep {
+        group1 {
+            psels = <NRF_PSEL(PWM_OUT0, 0, 3)>;
+            low-power-enable;
+        };
+        group2 {
+            psels = <NRF_PSEL(PWM_OUT1, 0, 31)>;
+            low-power-enable;
+        };
+    };
+};
+&uart0 {
+    current-speed = <115200>;
+};
+
+&spi0 {
+    status="disabled";
+};
+&spi1 {
+    status="disabled";
+};
+&spi2 {
+    status="disabled";
+};

@@ -1,0 +1,7 @@
+# Copyright (c) 2025 MLesniak https://github.com/LesniakM
+
+# Enable hardware stack protection
+# CONFIG_HW_STACK_PROTECTION=y
+
+# Enable MPU
+# CONFIG_ARM_MPU=y

@@ -1,0 +1,86 @@
+/{
+	chosen {
+		zephyr,console = &cdc_acm_uart0;
+	};
+
+	leds {
+		mpu6500_ad0: mpu6500ad0 {
+			label = "MPU6500_ADDRESS";
+			gpios = <&gpio0 24 0>;
+		};
+		driver_s12: drivers12 {
+			label = "M_DRIVER_12_SLEEP";
+			gpios = <&gpio0 6 0>;
+		};
+	};
+
+	motors: motors {
+        compatible = "pwm-motors";
+        pwms = <&pwm0 0 PWM_KHZ(20) PWM_POLARITY_NORMAL>,
+			   <&pwm0 1 PWM_KHZ(20) PWM_POLARITY_NORMAL>,
+			   <&pwm0 2 PWM_KHZ(20) PWM_POLARITY_NORMAL>,
+			   <&pwm0 3 PWM_KHZ(20) PWM_POLARITY_NORMAL>;
+    };
+
+	buttons {
+		compatible = "gpio-keys";
+		button1: button_1 {
+			gpios = <&gpio0 31 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			label = "Push button switch 1";
+		};
+		};
+
+    aliases {
+		mpu6500-address = &mpu6500_ad0;
+        drv-slp-12 = &driver_s12;
+		bt1 = &button1;
+    };
+};
+
+&pinctrl {
+    i2c0_default: i2c0_default {
+		group1 {
+			psels = <NRF_PSEL(TWIM_SDA, 1, 0)>, <NRF_PSEL(TWIM_SCL, 0, 11)>;
+		};
+	};
+
+	i2c0_sleep: i2c0_sleep {
+		group1 {
+			psels = <NRF_PSEL(TWIM_SDA, 1, 0)>, <NRF_PSEL(TWIM_SCL, 0, 11)>;
+			low-power-enable;
+		};
+	};
+
+	pwm0_default: pwm0_default {
+		group1 {
+			psels = <NRF_PSEL(PWM_OUT0, 0, 8)>,
+					<NRF_PSEL(PWM_OUT1, 0, 17)>,
+					<NRF_PSEL(PWM_OUT2, 0, 20)>,
+					<NRF_PSEL(PWM_OUT3, 0, 22)>;
+		};
+	};
+};
+
+&pwm0 {
+    compatible = "nordic,nrf-pwm";
+    status = "okay";
+	pinctrl-0 = <&pwm0_default>;
+	pinctrl-names = "default";
+};
+
+&i2c0 {
+    pinctrl-0 = <&i2c0_default>;
+	pinctrl-names = "default";
+    status = "okay";
+	mpu6500: mpu6500@68{
+        compatible = "i2c-device";
+        reg = < 0x68 >;
+        label = "mpu6500";
+    };
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};

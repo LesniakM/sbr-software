@@ -1,0 +1,7 @@
+# Copyright (c) 2025 MLesniak https://github.com/LesniakM
+
+board:
+  name: nicenano_v20
+  vendor: nice!
+  socs:
+  - name: nrf52840

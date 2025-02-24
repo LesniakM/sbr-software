@@ -1,0 +1,46 @@
+// Copyright (c) 2025 MLesniak https://github.com/LesniakM
+
+/dts-v1/;
+#include <nordic/nrf52840_qiaa.dtsi>
+#include "nicenano_v20_nrf52840-pinctrl.dtsi"
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/ {
+	model = "NiceNano V2.0 nRF52840";
+	compatible = "nordic,nicenano-v20-nrf52840";
+
+	chosen {
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		led0: led_0 {
+			label = "LED 0";
+			gpios = <&gpio0 15 0>;
+		};
+	};
+
+	/* These aliases are provided for compatibility with samples */
+	aliases {
+		led0 = &led0;
+	};
+};
+
+&gpiote {
+	status = "okay";
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+zephyr_udc0: &usbd {
+	compatible = "nordic,nrf-usbd";
+	status = "okay";
+};

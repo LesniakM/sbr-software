@@ -1,0 +1,26 @@
+# Copyright (c) 2025 MLesniak https://github.com/LesniakM
+
+identifier: NiceNano-v20
+name: NiceNano v2.0
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+ram: 256
+flash: 1024
+supported:
+  - adc
+  - ble
+  - counter
+  - gpio
+  - i2c
+  - nvs
+  - pwm
+  - spi
+  - watchdog
+testing:
+  ignore_tags:
+    - net
+vendor: nice!

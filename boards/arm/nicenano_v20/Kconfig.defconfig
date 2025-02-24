@@ -1,0 +1,5 @@
+# Copyright (c) 2025 MLesniak https://github.com/LesniakM
+
+if BOARD_NICENANO_V20
+
+endif # BOARD_NICENANO_V20
